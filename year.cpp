@@ -22,11 +22,20 @@ void Year::display(){
 	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text("Number Of Terms: %d", terms.size());
 	for (auto& t : terms) {
-		ImGui::Text("START OF TERM");
 		t.display();
 		//ImGui::Separator();
 	}
 
 
 	ImGui::EndChild();
+}
+
+void Year::addTerm(Term& t){
+	terms.emplace_back(t);
+}
+
+void Year::calculatePercentages(){
+	for (auto& t : terms) {
+		t.calculatePercentages();
+	}
 }

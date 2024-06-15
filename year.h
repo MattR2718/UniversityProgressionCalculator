@@ -7,7 +7,7 @@
 
 class Year {
 public:
-	std::vector<Term> terms = { Term(), Term() };
+	std::vector<Term> terms = {};
 	std::string year = "Default";
 
 	bool tabOpen = true;
@@ -17,6 +17,10 @@ public:
 	int getColumns();
 
 	void display();
+
+	void addTerm(Term& t);
+
+	void calculatePercentages();
 
 private:
 	static inline int count = 0;

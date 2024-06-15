@@ -15,6 +15,7 @@ public:
 	float courseworkRatio = 50.0f;
 	float examPercent = 0.0f;
 	float courseworkPercent = 0.0f;
+	float modulePercent = 0.0f;
 	bool pass = false;
 
 	float* fontScale = nullptr;
@@ -22,6 +23,8 @@ public:
 	Module(std::string mn = "Default Module", int cr = 0, float er = 50.0f, float crat = 50.0f, float ep = 50.0f, float cp = 50.0f);
 
 	void display();
+
+	void calculateModulePercent();
 
 
 private:

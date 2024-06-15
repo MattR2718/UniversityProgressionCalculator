@@ -1,0 +1,250 @@
+{
+  "Year One": {
+    "Term One": {
+      "COMP 1001": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1002": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1003": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1004": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    },
+    "Term Two": {
+      "COMP 1005": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1006": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1007": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 1008": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    }
+  },
+  "Year Two": {
+    "Term One": {
+      "COMP 2001": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2002": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2003": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2004": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    },
+    "Term Two": {
+      "COMP 2005": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2006": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2007": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 2008": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    }
+  },
+  "Year Three": {
+    "Term One": {
+      "COMP 3001": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3002": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3003": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3004": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    },
+    "Term Two": {
+      "COMP 3005": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3006": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3007": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 3008": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    }
+  },
+  "Year Four": {
+    "Term One": {
+      "COMP 4001": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4002": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4003": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 20.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4004": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    },
+    "Term Two": {
+      "COMP 4005": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4006": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4007": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      },
+      "COMP 4008": {
+        "Credits": 10,
+        "examRatio": 50.0,
+        "courseworkRatio": 50.0,
+        "examPercent": 0.0,
+        "courseworkPercent": 0.0
+      }
+    }
+  }
+}

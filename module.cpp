@@ -23,6 +23,13 @@ void Module::display(){
 	ImGui::Text(("Coursework Weight: " + std::to_string(courseworkPercent) + "%%").c_str());
 	ImGui::Text(("Exam Percentage: " + std::to_string(examPercent) + "%%").c_str());
 	ImGui::Text(("Coursework Percent: " + std::to_string(courseworkPercent) + "%%").c_str());
+	ImGui::Separator();
+	ImGui::Text(("Module Percent: " + std::to_string(modulePercent) + "%%").c_str());
 	ImGui::Text(("Pass Or Fail Module?....." + std::string(((pass) ? "Pass" : "Fail"))).c_str());
 	ImGui::EndChild();
+}
+
+void Module::calculateModulePercent(){
+	modulePercent = ((examRatio / 100) * (examPercent / 100) + (courseworkRatio / 100) * (courseworkPercent / 100)) * 100;
+	pass = (modulePercent >= 40.0) ? true : false;
 }

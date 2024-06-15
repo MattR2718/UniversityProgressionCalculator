@@ -14,15 +14,27 @@ project ("UniversityProgressionCalculator")
 find_package(SFML REQUIRED COMPONENTS graphics system window)
 find_package(imgui CONFIG REQUIRED)
 find_package(ImGui-SFML CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(unofficial-imgui-node-editor CONFIG REQUIRED)
 
 # Add source to this project's executable.
-add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp")
+add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h" )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
                     sfml-graphics sfml-system sfml-window
                     imgui::imgui
                     ImGui-SFML::ImGui-SFML
+                    nlohmann_json::nlohmann_json
+                    unofficial::imgui-node-editor::imgui-node-editor
                     )
+
+# Create a custom command to copy the directory
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}
+    COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/data to ${CMAKE_BINARY_DIR}"
+)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET UniversityProgressionCalculator PROPERTY CXX_STANDARD 20)
