@@ -36,12 +36,27 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
                     imnodes
                     )
 
+# Set the output directory path
+set(OUTPUT_DIRECTORY_DATA ${CMAKE_CURRENT_BINARY_DIR}/userData)
+set(OUTPUT_DIRECTORY_PROGRESSION ${CMAKE_CURRENT_BINARY_DIR}/progressionData)
+
+# Create the directory using the file command
+file(MAKE_DIRECTORY ${OUTPUT_DIRECTORY_DATA})
+file(MAKE_DIRECTORY ${OUTPUT_DIRECTORY_PROGRESSION})
+
 # Create a custom command to copy the directory
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}
-    COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/data to ${CMAKE_BINARY_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/userData ${OUTPUT_DIRECTORY_DATA}
+    COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/userData to ${OUTPUT_DIRECTORY_DATA}"
+)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/progressionData ${OUTPUT_DIRECTORY_PROGRESSION}
+    COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/progressionData to ${OUTPUT_DIRECTORY_PROGRESSION}"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
