@@ -33,12 +33,12 @@ std::vector<Year> loadYearsFromJson(const std::string& path) {
                     //std::cout << "      Coursework Ratio: " << course.value()["courseworkRatio"] << "\n";
                     //std::cout << "      Exam Percent: " << course.value()["examPercent"] << "\n";
                     //std::cout << "      Coursework Percent: " << course.value()["courseworkPercent"] << "\n";
-                    m.moduleName = course.key();
-                    m.credits = course.value()["Credits"];
-                    m.examRatio = course.value()["examRatio"];
-                    m.courseworkRatio = course.value()["courseworkRatio"];
-                    m.examPercent = course.value()["examPercent"];
-                    m.courseworkPercent = course.value()["courseworkPercent"];
+                    m.data.moduleName = course.key();
+                    m.data.credits = course.value()["Credits"];
+                    m.data.examRatio = course.value()["examRatio"];
+                    m.data.courseworkRatio = course.value()["courseworkRatio"];
+                    m.data.examPercent = course.value()["examPercent"];
+                    m.data.courseworkPercent = course.value()["courseworkPercent"];
 
                     t.modules.emplace_back(m);
                 }

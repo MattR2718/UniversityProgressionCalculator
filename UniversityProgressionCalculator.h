@@ -13,6 +13,7 @@
 #include <imnodes.h>
 
 #include "year.h"
+#include "module.h"
 #include "saveLoadJson.h"
 #include "progressionTree.h"
 
