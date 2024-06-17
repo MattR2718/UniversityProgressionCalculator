@@ -20,7 +20,7 @@ int main() {
 
     bool appearancePopup = false;
 
-    std::string path = "../../../data/data.json";
+    std::string path = "../../../userData/userData.json";
     if (std::filesystem::exists(path)) {
         years = loadYearsFromJson(path);
     }

@@ -1,5 +1,5 @@
 {
-  "Year One": {
+  "Year 1": {
     "Term One": {
       "COMP 1001": {
         "Credits": 10,
@@ -61,7 +61,7 @@
       }
     }
   },
-  "Year Two": {
+  "Year 2": {
     "Term One": {
       "COMP 2001": {
         "Credits": 10,
@@ -123,7 +123,7 @@
       }
     }
   },
-  "Year Three": {
+  "Year 3": {
     "Term One": {
       "COMP 3001": {
         "Credits": 10,
@@ -185,7 +185,7 @@
       }
     }
   },
-  "Year Four": {
+  "Year 4": {
     "Term One": {
       "COMP 4001": {
         "Credits": 10,
