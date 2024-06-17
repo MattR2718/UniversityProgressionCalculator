@@ -9,17 +9,9 @@
 
 #include "nlohmann/json.hpp"
 
-std::vector<Year> loadFromJson(const std::string& path) {
+std::vector<Year> loadYearsFromJson(const std::string& path) {
 	std::ifstream file(path);
 	nlohmann::json data = nlohmann::json::parse(file);
-
-    //std::string linetxt;
-    //while (std::getline(file, linetxt)) {
-    //    std::cout << linetxt << '\n';
-    //}
-
-    //nlohmann::json data;
-    //file >> data;
 
     std::vector<Year> years;
 
@@ -56,7 +48,7 @@ std::vector<Year> loadFromJson(const std::string& path) {
         }
     }
     catch (nlohmann::json::exception& e) {
-        std::cerr << "JSON error: " << e.what() << std::endl;
+        std::cerr << "JSON error: " << e.what() << '\n';
     }
 
 	return years;

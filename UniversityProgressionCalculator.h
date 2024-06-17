@@ -10,9 +10,10 @@
 #include <SFML/Graphics.hpp>
 #include <imgui-SFML.h>
 #include <imgui.h>
+#include <imnodes.h>
 
 #include "year.h"
 #include "saveLoadJson.h"
-#include "imgui-node-editor/imgui_node_editor.h"
+#include "progressionTree.h"
 
 // TODO: Reference additional headers your program requires here.

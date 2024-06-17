@@ -9,23 +9,31 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+include(FetchContent)
+
 project ("UniversityProgressionCalculator")
 
 find_package(SFML REQUIRED COMPONENTS graphics system window)
 find_package(imgui CONFIG REQUIRED)
 find_package(ImGui-SFML CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
-find_package(unofficial-imgui-node-editor CONFIG REQUIRED)
+
+# Get imnodes for node editor
+FetchContent_Declare( imnodes 
+    GIT_REPOSITORY https://github.com/Nelarius/imnodes.git
+    GIT_TAG origin/master
+    )
+FetchContent_MakeAvailable(imnodes)
 
 # Add source to this project's executable.
-add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h" )
+add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
                     sfml-graphics sfml-system sfml-window
                     imgui::imgui
                     ImGui-SFML::ImGui-SFML
                     nlohmann_json::nlohmann_json
-                    unofficial::imgui-node-editor::imgui-node-editor
+                    imnodes
                     )
 
 # Create a custom command to copy the directory

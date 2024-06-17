@@ -1,0 +1,193 @@
+{
+  "UON": {
+    "width": 6,
+    "height": 7,
+    "nodes": [
+      {
+        "id": 0,
+        "text": "Pass Marks In All Modules?",
+        "condition": "pass credits >= 120",
+        "yes": 1,
+        "no": 2,
+        "blank": -1
+      },
+      {
+        "id": 1,
+        "text": "Progress (Reg 9)",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 2,
+        "text": "Weighted stage average of at least 50%?",
+        "condition": "weighted average >= 50%",
+        "yes": 3,
+        "no": 5,
+        "blank": -1
+      },
+      {
+        "id": 3,
+        "text": "At least 100 credits of pass?",
+        "condition": "pass credits >= 100",
+        "yes": 4,
+        "no": 6,
+        "blank": -1
+      },
+      {
+        "id": 4,
+        "text": "Progress (Reg 10b)",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 5,
+        "text": "Weighted stage average of at least 45%?",
+        "condition": "weighted average >= 45%",
+        "yes": 6,
+        "no": 9,
+        "blank": -1
+      },
+      {
+        "id": 6,
+        "text": "At least 90 credits of pass?",
+        "condition": "pass credits >= 90",
+        "yes": 7,
+        "no": 10,
+        "blank": -1
+      },
+      {
+        "id": 7,
+        "text": "At least 110 credits at 30% or above?",
+        "condition": "110 credits >= 30%",
+        "yes": 8,
+        "no": 11,
+        "blank": -1
+      },
+      {
+        "id": 8,
+        "text": "Progress (Reg 10c)",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 9,
+        "text": "Weighted stage average of at least 40%?",
+        "condition": "weighted average >= 40%",
+        "yes": 10,
+        "no": 13,
+        "blank": -1
+      },
+      {
+        "id": 10,
+        "text": "At least 80 credits of pass?",
+        "condition": "pass credits >= 80",
+        "yes": 11,
+        "no": 13,
+        "blank": -1
+      },
+      {
+        "id": 11,
+        "text": "All marks at 30% or above?",
+        "condition": "120 credits >= 30%",
+        "yes": 12,
+        "no": 13,
+        "blank": -1
+      },
+      {
+        "id": 12,
+        "text": "Progress (Reg 10a)",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 13,
+        "text": "First reassessment opportunity in all failed modules",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": 14
+      },
+      {
+        "id": 14,
+        "text": "10a, 10b, or 10c satisfied?",
+        "condition": "false",
+        "yes": 15,
+        "no": 16,
+        "blank": -1
+      },
+      {
+        "id": 15,
+        "text": "Progress",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 16,
+        "text": "At least 80 credits of pass and a stage average of at least 40%?",
+        "condition": "false",
+        "yes": 17,
+        "no": 20,
+        "blank": -1
+      },
+      {
+        "id": 17,
+        "text": "Second reassessment opportunity in all failed modules",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": 18
+      },
+      {
+        "id": 18,
+        "text": "10a, 10b, or 10c satisfied?",
+        "condition": "false",
+        "yes": 19,
+        "no": 21,
+        "blank": -1
+      },
+      {
+        "id": 19,
+        "text": "Progress",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 20,
+        "text": "Termination of Programme",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      },
+      {
+        "id": 21,
+        "text": "Termination of Programme",
+        "condition": "false",
+        "yes": -1,
+        "no": -1,
+        "blank": -1
+      }
+    ],
+    "layout": [
+      [ 0, -1, -1, -1, -1, 1 ],
+      [ 2, 3, -1, -1, -1, 4 ],
+      [ 5, 6, 7, -1, -1, 8 ],
+      [ 9, 10, 11, 1, 1, 12 ],
+      [ -1, 13, 14, -1, -1, 15 ],
+      [ -1, -1, 16, 17, 18, 19 ],
+      [ -1, -1, 20, -1, 21, -1 ]
+    ]
+  }
+}
