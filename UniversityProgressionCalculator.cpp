@@ -3,6 +3,8 @@
 
 #include "UniversityProgressionCalculator.h"
 
+#include <limits> // for std::numeric_limits
+
 namespace ed = ax::NodeEditor;
 
 struct Node {
@@ -43,6 +45,16 @@ void InitializeNodes() {
     node2.outputPins.push_back(ed::PinId(nextId++));
     nodes.push_back(node2);
 
+    Node node00;
+    node00.id = ed::NodeId(nextId++);
+    node00.position = ImVec2(0, 0);
+    nodes.push_back(node00);
+
+    Node node1000010000;
+    node1000010000.id = ed::NodeId(nextId++);
+    node1000010000.position = ImVec2(10000, 10000);
+    nodes.push_back(node1000010000);
+
     // Create link
     Link link;
     link.id = ed::LinkId(nextId++);
@@ -51,11 +63,48 @@ void InitializeNodes() {
     links.push_back(link);
 }
 
+ImVec2 GetNodeBoundsMin() {
+    ImVec2 minPos(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+
+    for (const auto& node : nodes) {
+        if (node.position.x < minPos.x) minPos.x = node.position.x;
+        if (node.position.y < minPos.y) minPos.y = node.position.y;
+    }
+
+    return minPos;
+}
+
+ImVec2 GetNodeBoundsMax() {
+    ImVec2 maxPos(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
+
+    for (const auto& node : nodes) {
+        if (node.position.x > maxPos.x) maxPos.x = node.position.x;
+        if (node.position.y > maxPos.y) maxPos.y = node.position.y;
+    }
+
+    return maxPos;
+}
+
+void ZoomToFitNodes() {
+    ImVec2 minPos = GetNodeBoundsMin();
+    ImVec2 maxPos = GetNodeBoundsMax();
+
+    // Calculate the bounding box that fits all nodes
+    ImVec2 nodesSize = ImVec2(maxPos.x - minPos.x, maxPos.y - minPos.y);
+    float zoomLevel = 1.0f;
+
+    // Calculate zoom level to fit nodes within the viewport
+    if (nodesSize.x > 0 && nodesSize.y > 0) {
+        ImVec2 availableSize = ImGui::GetContentRegionAvail();
+        zoomLevel = std::min(availableSize.x / nodesSize.x, availableSize.y / nodesSize.y);
+    }
+
+    // Set ImGui Node Editor zoom level (adjust according to your Node Editor's API)
+    // ed::SetNodeEditorZoomLevel(zoomLevel); // Example hypothetical function
+}
+
 void DrawNodes() {
-    ed::Begin("My Node Editor");
-
     for (auto& node : nodes) {
-
         ed::BeginNode(node.id);
         ImGui::Text("%s", node.name.c_str());
 
@@ -83,8 +132,6 @@ void DrawNodes() {
     for (auto& link : links) {
         ed::Link(link.id, link.startPinId, link.endPinId);
     }
-
-    ed::End();
 }
 
 int main() {
@@ -238,11 +285,40 @@ int main() {
         }
 
 
-        ImGui::Begin("Tree Diagram");
+        //ImGui::Begin("Tree Diagram");
+
+        //// Make window fill screen but positioned below the menu bar
+        //ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));
+        //ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
+
+        //ed::NavigateToContent();
+
+        //
+
+        //DrawNodes();
+
+        //ImGui::End();
+
+        // ImGui Node Editor window
+        ImGui::Begin("Node Editor");
+
+        // Call zoom to fit function before drawing nodes
+        ZoomToFitNodes();
+
+        // Begin ImGui Node Editor content
+        ed::Begin("My Node Editor");
+
+        //// Make window fill screen but positioned below the menu bar
+        ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));
+        ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
+
+        // Draw nodes and links
+        DrawNodes();
 
         ed::NavigateToContent();
 
-        DrawNodes();
+        ed::End();
+        // End ImGui Node Editor content
 
         ImGui::End();
 
