@@ -7,13 +7,6 @@ ProgressionTree::ProgressionTree(const std::string& path, const std::string uni)
 
 	std::ifstream file(path);
 
-	//std::string linetxt;
-	//while (std::getline(file, linetxt)) {
-	//	std::cout << linetxt << '\n';
-	//}
-
-	//file.seekg(0, std::ios::beg);
-
 	nlohmann::json data = nlohmann::json::parse(file);
 
 	try {
@@ -92,14 +85,6 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight) {
 	// Calculate the gaps considering the padding
 	int xGap = (widgetWidth - 2 * margin - (layout[0].size() - 1) * xPadding) / layout[0].size();
 	int yGap = (widgetHeight - 2 * margin - (layout.size() - 1) * yPadding) / layout.size();
-
-	// Set up node color style with transparency
-	ImNodesStyle& style = ImNodes::GetStyle();
-	
-	style.Colors[ImNodesCol_NodeBackground] = IM_COL32(50, 50, 50, 90);   // Node background color
-	style.Colors[ImNodesCol_NodeBackgroundHovered] = IM_COL32(75, 75, 75, 180);  // Node background color when hovered
-	style.Colors[ImNodesCol_NodeBackgroundSelected] = IM_COL32(75, 75, 75, 180);  // Node background color when selected
-	style.Colors[ImNodesCol_NodeOutline] = IM_COL32(100, 100, 100, 180);   // Node outline color
 
 	int n = 0;
 	std::vector<ImVec2> nodePositions(nodes.size());

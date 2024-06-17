@@ -5,20 +5,14 @@
 
 int main() {
 
-    //const int WIDTH = 800;
-    //const int HEIGHT = 800;
     const int WIDTH = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().width) / 100) * 100;
     const int HEIGHT = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().height) / 100) * 100;
 
-    // float bounds = 1.0;
-    // noise::utils::NoiseMap heightMap = generateHeightMap(WIDTH, HEIGHT, bounds);
-
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "PerlinTerrain");
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "University Progression Calculator");
     window.setVerticalSyncEnabled(true);
     auto _ = ImGui::SFML::Init(window);
     ImNodes::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    //io.FontAllowUserScaling = true;
     
     float textScale = (sf::VideoMode::getDesktopMode().width < 1350) ? 1.4 : 1.8;
 
@@ -37,6 +31,10 @@ int main() {
 
     std::string treePath = "../../../progression.json";
     ProgressionTree progTree(treePath);
+    ImNodesStyle& style = ImNodes::GetStyle();
+    unsigned int bg = style.Colors[ImNodesCol_NodeBackground] & ((-1) >> (32 - 24));
+    bg = bg + (90 << 24);
+    style.Colors[ImNodesCol_NodeBackground] = bg;
 
     sf::Clock deltaClock;
     while (window.isOpen())
@@ -164,25 +162,6 @@ int main() {
 
         ImNodes::BeginNodeEditor();
 
-        /*ImNodes::BeginNode(1);
-        const int output_attr_id = 2;
-        ImNodes::BeginOutputAttribute(output_attr_id);
-        ImGui::Text("output pin");
-        ImNodes::EndOutputAttribute();
-        ImGui::Dummy(ImVec2(80.0f, 45.0f));
-
-        ImNodes::SetNodeEditorSpacePos(1, ImVec2(500.0, 500.0));
-        ImNodes::EndNode();
-
-        ImNodes::BeginNode(2);
-        ImNodes::BeginOutputAttribute(3);
-        ImGui::Text("output pin");
-        ImNodes::EndOutputAttribute();
-        ImGui::Dummy(ImVec2(80.0f, 45.0f));
-
-        ImNodes::SetNodeEditorSpacePos(2, ImVec2(1500.0, 1500.0));
-        ImNodes::EndNode();*/
-
         auto size = ImGui::GetWindowSize();
 
         progTree.drawTree(size.x, size.y);
@@ -191,10 +170,6 @@ int main() {
         ImNodes::EndNodeEditor();
 
         ImGui::End();
-
-
-
-
 
         ImGui::SFML::Render(window);
         window.display();
