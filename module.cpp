@@ -13,50 +13,55 @@ Module::Module(std::string mn, int cr, float er, float crat, float ep, float cp)
 }
 
 void Module::display(){
+	this->calculateModulePercent();
+
 	ImGui::BeginChild((data.moduleName + "#" + std::to_string(id)).c_str(), ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY);
 	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text(("Module Name: " + data.moduleName).c_str());
 
 	ImGui::SameLine();
 	if (ImGui::Button("EDIT")) {
-		this->editingModule = true;
+		this->editingModule = !this->editingModule;
 	}
 
-	ImGui::Text(("Credits: " + std::to_string(data.credits)).c_str());
-	ImGui::Text(("Exam Weight: " + std::to_string(data.examRatio) + "%%").c_str());
-	ImGui::Text(("Coursework Weight: " + std::to_string(data.courseworkPercent) + "%%").c_str());
-	ImGui::Text(("Exam Percentage: " + std::to_string(data.examPercent) + "%%").c_str());
-	ImGui::Text(("Coursework Percent: " + std::to_string(data.courseworkPercent) + "%%").c_str());
+	ImGui::Text("Credits: %d", data.credits);
+	ImGui::Text("Exam Weight: %.2f%%", data.examRatio);
+	ImGui::Text("Coursework Weight: %.2f%%", data.courseworkRatio);
+	ImGui::Text("Exam Percent: %.2f%%", data.examPercent);
+	ImGui::Text("Coursework Percent: %.2f%%", data.courseworkPercent);
+	
 	ImGui::Separator();
 	ImGui::Text(("Module Percent: " + std::to_string(data.modulePercent) + "%%").c_str());
 	ImGui::Text(("Pass Or Fail Module?....." + std::string(((data.pass) ? "Pass" : "Fail"))).c_str());
 	ImGui::EndChild();
 
 	if (this->editingModule) {
+		if (this->setData) {
+			this->tempData.set(this->data);
+			this->setData = false;
+		}
 
-		this->tempData.moduleName = data.moduleName;
-		this->tempData.credits = data.credits;
-		this->tempData.examRatio = data.examRatio;
-		this->tempData.courseworkRatio = data.courseworkRatio;
-		this->tempData.examPercent = data.examPercent;
-		this->tempData.courseworkPercent = data.courseworkPercent;
+		ImGui::Begin(("EDIT: " + this->tempData.moduleName).c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize);
+		
+		ImGui::InputText("Module Name", tempData.mNameBuf, sizeof(tempData.mNameBuf), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_AlwaysOverwrite);
+		
+		ImGui::InputInt("Credits", &tempData.credits);
 
+		ImGui::InputFloat("Exam Weight", &tempData.examRatio, 0.01f, 1.0f, "%.2f%%");
+		ImGui::InputFloat("Coursework Weight", &tempData.courseworkRatio, 0.01f, 1.0f, "%.2f%%");
+		ImGui::InputFloat("Exam Percentage", &tempData.examPercent, 0.01f, 1.0f, "%.2f%%");
+		ImGui::InputFloat("Coursework Percentage", &tempData.courseworkPercent, 0.01f, 1.0f, "%.2f%%");
 
-		ImGui::Begin(("EDIT: " + this->data.moduleName).c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize);
-		ImGui::InputText(("Module Name: " + data.moduleName).c_str(), this->moduleNameBuf, 256);
-		ImGui::InputInt(("Credits: " + std::to_string(data.credits)).c_str(), &tempData.credits);
-		ImGui::InputFloat(("Exam Weight: " + std::to_string(data.examRatio) + "%%").c_str(), &data.examRatio);
-		ImGui::InputFloat(("Coursework Weight: " + std::to_string(data.courseworkPercent) + "%%").c_str(), &data.courseworkRatio);
-		ImGui::InputFloat(("Exam Percentage: " + std::to_string(data.examPercent) + "%%").c_str(), &data.examPercent);
-		ImGui::InputFloat(("Coursework Percent: " + std::to_string(data.courseworkPercent) + "%%").c_str(), &data.courseworkPercent);
+		ImGui::Text((ImGui::IsKeyPressed(ImGuiKey_Backspace) ? "Backspace Pressed" : "Backspace Not Pressed"));
 
 		if (ImGui::Button("Save")) {
-			data = tempData;
-			data.moduleName = std::string(moduleNameBuf);
+			this->data.set(this->tempData);
 			this->editingModule = false;
+			this->setData = true;
 		}
 		if (ImGui::Button("Close")) {
 			this->editingModule = false;
+			this->setData = true;
 		}
 
 		ImGui::End();

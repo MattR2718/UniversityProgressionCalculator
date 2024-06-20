@@ -40,14 +40,17 @@ int main() {
     while (window.isOpen())
     {
         sf::Event event;
-        ImGui::SFML::ProcessEvent(window, event);
         while (window.pollEvent(event))
         {
+            ImGui::SFML::ProcessEvent(event);
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
-        ImGui::SFML::Update(window, deltaClock.restart());
+
+        auto t = deltaClock.restart();
+        ImGui::SFML::Update(window, t);
+        io.DeltaTime = t.asSeconds();
         window.clear(sf::Color::Black);
 
 
@@ -96,7 +99,7 @@ int main() {
 
         // Apply font scaling for the content
         ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-        ImGui::GetIO().Fonts->Fonts[0]->Scale = textScale;
+        io.Fonts->Fonts[0]->Scale = textScale;
 
         // Create tabs for years
         if (years.size()) {
@@ -129,7 +132,7 @@ int main() {
         // Popup code
         if (appearancePopup && ImGui::Begin("AppearanceSettings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-            ImGui::GetIO().Fonts->Fonts[0]->Scale = textScale;
+            io.Fonts->Fonts[0]->Scale = textScale;
 
             ImGui::Text("Appearance Settings");
             ImGui::Separator();
@@ -170,6 +173,12 @@ int main() {
         ImNodes::EndNodeEditor();
 
         ImGui::End();
+
+        //ImGui::ShowDemoWindow();
+
+        //ImGui::Begin("FPS");
+        //ImGui::Text(std::to_string(1.0 / t.asSeconds()).c_str());
+        //ImGui::End();
 
         ImGui::SFML::Render(window);
         window.display();

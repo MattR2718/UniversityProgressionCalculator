@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <chrono>
 
 #include <imgui-SFML.h>
 #include <imgui.h>
@@ -14,6 +15,36 @@ struct ModuleData {
 	float courseworkPercent = 0.0f;
 	float modulePercent = 0.0f;
 	bool pass = false;
+
+	int examRatioArr[2]{ 0, 0 };
+	int courseworkRatioArr[2]{ 0, 0 };
+	int examPercentArr[2]{ 0, 0 };
+	int courseworkPercentArr[2]{ 0, 0 };
+
+	char mNameBuf[256] = "";
+
+
+	void set(const ModuleData& d, bool calcFromInts = false) {
+		moduleName = std::string(d.mNameBuf);
+		credits = d.credits;
+
+		if (!calcFromInts) {
+			examRatio = d.examRatio;
+			courseworkRatio = d.courseworkRatio;
+			examPercent = d.examPercent;
+			courseworkPercent = d.courseworkPercent;
+		}
+		else {
+			examRatio = (float)d.examRatioArr[0] + (float)d.examRatioArr[1] / 100;
+			courseworkRatio = (float)d.courseworkRatioArr[0] + (float)d.courseworkRatioArr[1] / 100;
+			examPercent = (float)d.examPercentArr[0] + (float)d.examPercentArr[1] / 100;
+			courseworkPercent = (float)d.courseworkPercentArr[0] + (float)d.courseworkPercentArr[1] / 100;
+		}
+	}
+
+	std::string makeFloatArrString(int arr[2]) {
+		return std::to_string(arr[0]) + "." + std::to_string(arr[1]) + "%";
+	}
 };
 
 
@@ -37,6 +68,6 @@ private:
 	int id = -1;
 
 	bool editingModule = false;
+	bool setData = true;
 	ModuleData tempData;
-	char moduleNameBuf[256] = "\0";
 };
