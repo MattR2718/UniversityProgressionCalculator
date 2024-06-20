@@ -22,6 +22,7 @@ struct Node{
 
 class ProgressionTree {
 public:
+	ProgressionTree();
 	ProgressionTree(const std::string& path, const std::string uni = "UON");
 
 	void drawTree(int widgetWidth, int widgetHeight);

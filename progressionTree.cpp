@@ -1,5 +1,8 @@
 #include "progressionTree.h"
 
+ProgressionTree::ProgressionTree(){
+}
+
 ProgressionTree::ProgressionTree(const std::string& path, const std::string uni){
 	if (!std::filesystem::exists(path)) {
 		return;

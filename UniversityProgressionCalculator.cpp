@@ -20,17 +20,25 @@ int main() {
 
     bool appearancePopup = false;
 
-    std::string path = "../../../userData/userData.json";
+    std::string path = "userData/userData.json";
+    bool userDataFileExists = false;
     if (std::filesystem::exists(path)) {
         years = loadYearsFromJson(path);
+        userDataFileExists = true;
     }
 
     for (auto& y : years) {
         y.calculatePercentages();
     }
 
-    std::string treePath = "../../../progression.json";
-    ProgressionTree progTree(treePath);
+    std::string treePath = "progressionData/progressionData.json";
+    bool progressionTreeFileExists = false;
+    ProgressionTree progTree;
+    if (std::filesystem::exists(treePath)) {
+        progTree = ProgressionTree(treePath);
+        progressionTreeFileExists = true;
+    }
+
     ImNodesStyle& style = ImNodes::GetStyle();
     unsigned int bg = style.Colors[ImNodesCol_NodeBackground] & ((-1) >> (32 - 24));
     bg = bg + (90 << 24);
@@ -52,7 +60,6 @@ int main() {
         ImGui::SFML::Update(window, t);
         io.DeltaTime = t.asSeconds();
         window.clear(sf::Color::Black);
-
 
         // Create a menu bar at the top of the screen
         if (ImGui::BeginMainMenuBar()) {
@@ -87,98 +94,125 @@ int main() {
 
         // Get the height of the main menu bar
         float menuBarHeight = ImGui::GetFrameHeightWithSpacing() * textScale;
-
-        //
-        // Main Screen
-        ImGui::Begin("Frame", nullptr, ImGuiWindowFlags_NoDecoration);
         auto windowSize = window.getSize();
 
-        // Make window fill screen but positioned below the menu bar
-        ImGui::SetWindowPos(ImVec2(0.0f, menuBarHeight));
-        ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
+        if (!userDataFileExists) {
+            ImGui::Begin("NO USER DATA");
+            // Make window fill screen but positioned below the menu bar
+            ImGui::SetWindowPos(ImVec2(0.0f, menuBarHeight));
+            ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
 
-        // Apply font scaling for the content
-        ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-        io.Fonts->Fonts[0]->Scale = textScale;
+            ImGui::Text("COULD NOT FIND FILE WITH USER DATA");
+            ImGui::Text(("To fix, download file from [https://github.com/MattR2718/UniversityProgressionCalculator/blob/master/userData/userData.json] and put into location [" + path + "]").c_str());
 
-        // Create tabs for years
-        if (years.size()) {
-            ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_None;
-            if (ImGui::BeginTabBar("Years Tab Bar", tabBarFlags)) {
-                ImGuiTabItemFlags tabItemFlags = ImGuiTabItemFlags_NoAssumedClosure | ImGuiTabItemFlags_NoReorder;
-                for (auto& year : years) {
-                    if (year.tabOpen && ImGui::BeginTabItem(year.year.c_str(), &year.tabOpen, tabItemFlags)) {
-                        // Set Number Of Columns, for each term
-                        ImGui::Columns(year.terms.size());
-                        //year.display();
-
-                        for (auto& t : year.terms) {
-                            t.display();
-                            t.fontScale = &textScale;
-                            ImGui::NextColumn();
-                        }
-
-                        ImGui::EndTabItem();
-                    }
-                }
-                ImGui::EndTabBar();
-            }
+            ImGui::End();
         }
-        ImGui::PopFont();
 
-        ImGui::End();
+        if (!progressionTreeFileExists) {
+            ImGui::Begin("NO PROGRESSION DATA");
+            // Make window fill screen but positioned below the menu bar
+            ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));
+            ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
 
-        //
-        // Popup code
-        if (appearancePopup && ImGui::Begin("AppearanceSettings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-            io.Fonts->Fonts[0]->Scale = textScale;
+            ImGui::Text("COULD NOT FIND FILE WITH PROGRESSION DATA");
+            ImGui::Text(("To fix, download file from [https://github.com/MattR2718/UniversityProgressionCalculator/blob/master/progressionData/progressionData.json] and put into location [" + treePath + "]").c_str());
 
-            ImGui::Text("Appearance Settings");
-            ImGui::Separator();
-
-            ImGui::InputFloat("Text Scale", &textScale, 0.1f, 0.25f, "%.3f");
-
-            if (!ImGui::IsWindowFocused()) {
-                appearancePopup = false;
-            }
-
-            if (ImGui::Button("Close")) {
-                appearancePopup = false;
-            }
-            ImGui::PopFont();
             ImGui::End();
         }
 
 
-        //
-        //
-        //
-        //
-        //
-        // Tree View
-        ImGui::Begin("Tree View");
+        if (userDataFileExists && progressionTreeFileExists) {
+            //
+            // Main Screen
+            ImGui::Begin("Frame", nullptr, ImGuiWindowFlags_NoDecoration);
 
-        // Make window fill screen but positioned below the menu bar
-        ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));
-        ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
+            // Make window fill screen but positioned below the menu bar
+            ImGui::SetWindowPos(ImVec2(0.0f, menuBarHeight));
+            ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
 
-        ImNodes::BeginNodeEditor();
+            // Apply font scaling for the content
+            ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
+            io.Fonts->Fonts[0]->Scale = textScale;
 
-        auto size = ImGui::GetWindowSize();
+            // Create tabs for years
+            if (years.size()) {
+                ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_None;
+                if (ImGui::BeginTabBar("Years Tab Bar", tabBarFlags)) {
+                    ImGuiTabItemFlags tabItemFlags = ImGuiTabItemFlags_NoAssumedClosure | ImGuiTabItemFlags_NoReorder;
+                    for (auto& year : years) {
+                        if (year.tabOpen && ImGui::BeginTabItem(year.year.c_str(), &year.tabOpen, tabItemFlags)) {
+                            // Set Number Of Columns, for each term
+                            ImGui::Columns(year.terms.size());
+                            //year.display();
 
-        progTree.drawTree(size.x, size.y);
+                            for (auto& t : year.terms) {
+                                t.display();
+                                t.fontScale = &textScale;
+                                ImGui::NextColumn();
+                            }
+
+                            ImGui::EndTabItem();
+                        }
+                    }
+                    ImGui::EndTabBar();
+                }
+            }
+            ImGui::PopFont();
+
+            ImGui::End();
+
+            //
+            // Popup code
+            if (appearancePopup && ImGui::Begin("AppearanceSettings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+                ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
+                io.Fonts->Fonts[0]->Scale = textScale;
+
+                ImGui::Text("Appearance Settings");
+                ImGui::Separator();
+
+                ImGui::InputFloat("Text Scale", &textScale, 0.1f, 0.25f, "%.3f");
+
+                if (!ImGui::IsWindowFocused()) {
+                    appearancePopup = false;
+                }
+
+                if (ImGui::Button("Close")) {
+                    appearancePopup = false;
+                }
+                ImGui::PopFont();
+                ImGui::End();
+            }
 
 
-        ImNodes::EndNodeEditor();
+            //
+            //
+            //
+            //
+            //
+            // Tree View
+            ImGui::Begin("Tree View");
 
-        ImGui::End();
+            // Make window fill screen but positioned below the menu bar
+            ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));
+            ImGui::SetWindowSize(ImVec2(windowSize.x / 2, windowSize.y - menuBarHeight));
 
-        //ImGui::ShowDemoWindow();
+            ImNodes::BeginNodeEditor();
 
-        //ImGui::Begin("FPS");
-        //ImGui::Text(std::to_string(1.0 / t.asSeconds()).c_str());
-        //ImGui::End();
+            auto size = ImGui::GetWindowSize();
+
+            progTree.drawTree(size.x, size.y);
+
+
+            ImNodes::EndNodeEditor();
+
+            ImGui::End();
+
+            //ImGui::ShowDemoWindow();
+
+            //ImGui::Begin("FPS");
+            //ImGui::Text(std::to_string(1.0 / t.asSeconds()).c_str());
+            //ImGui::End();
+        }
 
         ImGui::SFML::Render(window);
         window.display();
