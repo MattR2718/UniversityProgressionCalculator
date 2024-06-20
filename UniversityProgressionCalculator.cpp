@@ -44,6 +44,8 @@ int main() {
     bg = bg + (90 << 24);
     style.Colors[ImNodesCol_NodeBackground] = bg;
 
+    bool windowClose = false;
+
     sf::Clock deltaClock;
     while (window.isOpen())
     {
@@ -52,6 +54,7 @@ int main() {
         {
             ImGui::SFML::ProcessEvent(event);
             if (event.type == sf::Event::Closed) {
+                saveYearsToJson(path, years);
                 window.close();
             }
         }
