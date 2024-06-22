@@ -33,7 +33,7 @@ FetchContent_Declare( ctre
 FetchContent_MakeAvailable(ctre)
 
 # Add source to this project's executable.
-add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp")
+add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp" "imguiStyle.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
                     sfml-graphics sfml-system sfml-window

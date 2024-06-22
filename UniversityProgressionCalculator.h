@@ -18,4 +18,6 @@
 #include "saveLoadJson.h"
 #include "progressionTree.h"
 
+#include "imguiStyle.h"
+
 // TODO: Reference additional headers your program requires here.

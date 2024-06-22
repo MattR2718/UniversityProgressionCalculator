@@ -38,6 +38,7 @@ void Module::display(){
 	if (this->editingModule) {
 		if (this->setData) {
 			this->tempData.set(this->data);
+			strcpy(this->tempData.mNameBuf, this->data.moduleName.c_str());
 			this->setData = false;
 		}
 

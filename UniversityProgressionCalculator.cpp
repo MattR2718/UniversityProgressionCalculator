@@ -53,6 +53,8 @@ int main() {
 
     KeyInformation keyInformation;
 
+    setStyle();
+
     sf::Clock deltaClock;
     while (window.isOpen())
     {
@@ -198,7 +200,7 @@ int main() {
             //
             //
             // Tree View
-            ImGui::Begin("Tree View");
+            ImGui::Begin("Tree View", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
 
             // Make window fill screen but positioned below the menu bar
             ImGui::SetWindowPos(ImVec2(windowSize.x / 2, menuBarHeight));

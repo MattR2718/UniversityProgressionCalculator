@@ -134,9 +134,9 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScal
 				ImNodes::SetNodeEditorSpacePos(node.id, ImVec2(xPos, yPos));
 				nodePositions[n] = ImVec2(xPos, yPos);
 
-				ImNodes::BeginNodeTitleBar();
-				ImGui::TextUnformatted("Title");
-				ImNodes::EndNodeTitleBar();
+				//ImNodes::BeginNodeTitleBar();
+				//ImGui::TextUnformatted("Title");
+				//ImNodes::EndNodeTitleBar();
 
 				std::vector<std::string> lines = wrapText(node.text, 12.0f, ImGui::GetFont());
 

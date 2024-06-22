@@ -2,6 +2,7 @@
 
 #include <string>
 #include <chrono>
+#include <cstring>
 
 #include <imgui-SFML.h>
 #include <imgui.h>
