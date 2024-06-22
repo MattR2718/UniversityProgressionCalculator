@@ -17,7 +17,7 @@ int main() {
     ImNodes::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     
-    float textScale = (HEIGHT < 1350) ? 1.4 : 1.8;
+    float textScale = (HEIGHT < 1350) ? 1.2 : 1.8;
 
     std::vector<Year> years;
 

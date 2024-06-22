@@ -111,7 +111,20 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScal
 			if (n < nodes.size() && layout[j][i] != -1) {
 				Node node = nodes[n];
 
-				if (node.checkCondition(keyInformation)) {
+				bool progressionNode = node.yesid == -1 && node.noid == -1 && node.blankid == -1;
+				bool greenProgression = false;
+				if (progressionNode) {
+					for (auto& l : links) {
+						if (l.second == node.id) {
+							if (nodes[l.first].checkCondition(keyInformation)) {
+								greenProgression = true;
+								break;
+							}
+						}
+					}
+				}
+
+				if ((progressionNode && greenProgression) || (!progressionNode && node.checkCondition(keyInformation))) {
 					ImNodes::PushColorStyle(ImNodesCol_NodeOutline, IM_COL32(0, 255, 0, 255));
 				}
 				ImNodes::BeginNode(node.id);
@@ -144,7 +157,7 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScal
 				ImNodes::EndOutputAttribute();
 
 				ImNodes::EndNode();
-				if (node.checkCondition(keyInformation)) {
+				if ((progressionNode && greenProgression) || (!progressionNode && node.checkCondition(keyInformation))) {
 					ImNodes::PopColorStyle();
 				}
 
