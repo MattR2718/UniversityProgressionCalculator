@@ -12,6 +12,7 @@
 #include <imgui.h>
 #include <imnodes.h>
 
+#include "keyInformation.h"
 #include "year.h"
 #include "module.h"
 #include "saveLoadJson.h"

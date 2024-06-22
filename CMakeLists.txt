@@ -25,6 +25,13 @@ FetchContent_Declare( imnodes
     )
 FetchContent_MakeAvailable(imnodes)
 
+# Get ctre for faster regex
+FetchContent_Declare( ctre 
+    GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions
+    GIT_TAG origin/main
+    )
+FetchContent_MakeAvailable(ctre)
+
 # Add source to this project's executable.
 add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp")
 
@@ -34,6 +41,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
                     ImGui-SFML::ImGui-SFML
                     nlohmann_json::nlohmann_json
                     imnodes
+                    ctre::ctre
                     )
 
 # Set the output directory path

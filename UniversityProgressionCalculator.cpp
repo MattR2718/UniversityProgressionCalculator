@@ -5,8 +5,11 @@
 
 int main() {
 
-    const int WIDTH = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().width) / 100) * 100;
-    const int HEIGHT = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().height) / 100) * 100;
+    int WIDTH = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().width) / 100) * 100;
+    int HEIGHT = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().height) / 100) * 100;
+
+    //WIDTH = 1920;
+    //HEIGHT = 1080;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "University Progression Calculator");
     window.setVerticalSyncEnabled(true);
@@ -14,7 +17,7 @@ int main() {
     ImNodes::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     
-    float textScale = (sf::VideoMode::getDesktopMode().width < 1350) ? 1.4 : 1.8;
+    float textScale = (HEIGHT < 1350) ? 1.4 : 1.8;
 
     std::vector<Year> years;
 
@@ -46,6 +49,10 @@ int main() {
 
     bool windowClose = false;
 
+    bool keyInformationWindow = false;
+
+    KeyInformation keyInformation;
+
     sf::Clock deltaClock;
     while (window.isOpen())
     {
@@ -69,17 +76,8 @@ int main() {
             // Set font scale for menu bar
             ImGui::SetWindowFontScale(textScale);
             if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("Create")) {
-                    // Handle Create action
-                }
-                if (ImGui::MenuItem("Open", "Ctrl+O")) {
-                    // Handle Open action
-                }
-                if (ImGui::MenuItem("Save", "Ctrl+S")) {
-                    // Handle Save action
-                }
-                if (ImGui::MenuItem("Save as..")) {
-                    // Handle Save as action
+                if (ImGui::MenuItem("Save")) {
+                    saveYearsToJson(path, years);
                 }
                 ImGui::EndMenu();
             }
@@ -88,6 +86,9 @@ int main() {
                 if (ImGui::MenuItem("Appearance")) {
                     // Open the appearance popup
                     appearancePopup = true;
+                }
+                if (ImGui::MenuItem("Key Information")) {
+                    keyInformationWindow = !keyInformationWindow;
                 }
                 ImGui::EndMenu();
             }
@@ -155,6 +156,8 @@ int main() {
                             }
 
                             ImGui::EndTabItem();
+
+                            keyInformation.calcData(year);
                         }
                     }
                     ImGui::EndTabBar();
@@ -169,6 +172,8 @@ int main() {
             if (appearancePopup && ImGui::Begin("AppearanceSettings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
                 ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
                 io.Fonts->Fonts[0]->Scale = textScale;
+
+                ImGui::SetWindowFontScale(textScale);
 
                 ImGui::Text("Appearance Settings");
                 ImGui::Separator();
@@ -203,7 +208,7 @@ int main() {
 
             auto size = ImGui::GetWindowSize();
 
-            progTree.drawTree(size.x, size.y);
+            progTree.drawTree(size.x, size.y, textScale, keyInformation);
 
 
             ImNodes::EndNodeEditor();
@@ -215,6 +220,10 @@ int main() {
             //ImGui::Begin("FPS");
             //ImGui::Text(std::to_string(1.0 / t.asSeconds()).c_str());
             //ImGui::End();
+
+            if (keyInformationWindow) {
+                keyInformation.display(textScale, keyInformationWindow);
+            }
         }
 
         ImGui::SFML::Render(window);

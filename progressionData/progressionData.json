@@ -14,7 +14,7 @@
       {
         "id": 1,
         "text": "Progress (Reg 9)",
-        "condition": "false",
+        "condition": "true",
         "yes": -1,
         "no": -1,
         "blank": -1
@@ -38,7 +38,7 @@
       {
         "id": 4,
         "text": "Progress (Reg 10b)",
-        "condition": "false",
+        "condition": "true",
         "yes": -1,
         "no": -1,
         "blank": -1
@@ -70,7 +70,7 @@
       {
         "id": 8,
         "text": "Progress (Reg 10c)",
-        "condition": "false",
+        "condition": "true",
         "yes": -1,
         "no": -1,
         "blank": -1
@@ -102,7 +102,7 @@
       {
         "id": 12,
         "text": "Progress (Reg 10a)",
-        "condition": "false",
+        "condition": "true",
         "yes": -1,
         "no": -1,
         "blank": -1

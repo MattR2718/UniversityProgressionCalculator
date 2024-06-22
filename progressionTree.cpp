@@ -77,12 +77,25 @@ std::vector<std::string> wrapText(const std::string& text, float maxWidth, ImFon
 }
 
 
-void ProgressionTree::drawTree(int widgetWidth, int widgetHeight) {
-	this->unique = 0;
 
+
+bool checkBothConditions(const std::pair<int, int>& link, const std::vector<Node>& nodes, const KeyInformation ki) {
+	bool n1 = false;
+	bool n2 = false;
+
+	for (const Node& n : nodes) {
+		if (n.id == link.first && n.checkCondition(ki)) { n1 = true; }
+		if (n.id == link.second && n.checkCondition(ki)) { n2 = true; }
+	}
+
+	return n1 && n2;
+}
+
+
+void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScale, KeyInformation keyInformation) {
 	// Define padding between nodes
-	const int xPadding = 20;  // Horizontal gap
-	const int yPadding = 20;  // Vertical gap
+	const int xPadding = 10;  // Horizontal gap
+	const int yPadding = 40;  // Vertical gap
 	const int margin = 50;    // Margin from the edges
 
 	// Calculate the gaps considering the padding
@@ -97,6 +110,10 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight) {
 		for (int i = 0; i < layout[j].size(); i++) {
 			if (n < nodes.size() && layout[j][i] != -1) {
 				Node node = nodes[n];
+
+				if (node.checkCondition(keyInformation)) {
+					ImNodes::PushColorStyle(ImNodesCol_NodeOutline, IM_COL32(0, 255, 0, 255));
+				}
 				ImNodes::BeginNode(node.id);
 
 				float xPos = margin + i * (xGap + xPadding);
@@ -108,21 +125,28 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight) {
 				ImGui::TextUnformatted("Title");
 				ImNodes::EndNodeTitleBar();
 
-				std::vector<std::string> lines = wrapText(node.text, 10.0f, ImGui::GetFont());
+				std::vector<std::string> lines = wrapText(node.text, 12.0f, ImGui::GetFont());
 
 				for (const std::string& line : lines) {
 					ImGui::TextWrapped("%s", line.c_str());
 				}
 
-				ImNodes::BeginInputAttribute(node.id * 1000);
+				ImNodes::BeginInputAttribute(node.id * 100);
+				ImGui::SetWindowFontScale(0.5);
 				ImGui::Text("IN");
+				//ImGui::Text("#IN");
 				ImNodes::EndInputAttribute();
 
-				ImNodes::BeginOutputAttribute(node.id * 1001);
+				ImNodes::BeginOutputAttribute(node.id * 7);
 				ImGui::Text("OUT");
+				//ImGui::Text("#OUT");
+				ImGui::SetWindowFontScale(1);
 				ImNodes::EndOutputAttribute();
 
 				ImNodes::EndNode();
+				if (node.checkCondition(keyInformation)) {
+					ImNodes::PopColorStyle();
+				}
 
 				n++;
 			}
@@ -130,9 +154,20 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight) {
 	}
 
 	// Draw the links after nodes have been positioned
+	// Sometimes having links causes the program to explode in memory
+	// Crashes somewhere allocating memory for line segments creating bezier cuves
+	// Sometimes fixes itself by removing the below code, compiling then readding for some reason
+#if true
 	for (int i = 0; i < links.size(); ++i) {
 		const std::pair<int, int> p = links[i];
-		ImNodes::Link(i, p.first * 1001, p.second * 1000);
+		if (checkBothConditions(p, nodes, keyInformation)) {
+			ImNodes::PushColorStyle(ImNodesCol_Link, IM_COL32(0, 255, 0, 244));
+			ImNodes::Link(i, p.first * 7, p.second * 100);
+			ImNodes::PopColorStyle();
+		}else{
+			ImNodes::Link(i, p.first * 7, p.second * 100);
+		}
 	}
+#endif
 }
 

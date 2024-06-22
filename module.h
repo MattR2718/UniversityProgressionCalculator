@@ -23,9 +23,12 @@ struct ModuleData {
 
 	char mNameBuf[256] = "";
 
+	static inline int uniqueIdent = 0;
+
 
 	void set(const ModuleData& d, bool calcFromInts = false) {
 		moduleName = std::string(d.mNameBuf);
+		if (moduleName == "") { moduleName = "Default Name" + std::to_string(uniqueIdent++); }
 		credits = d.credits;
 
 		if (!calcFromInts) {
