@@ -1,7 +1,7 @@
 #pragma once
 
 #include <imgui.h>
-#include <imgui_freetype.h>
+//#include <imgui_freetype.h>
 
 void setStyle(bool darkMode = false, float alpha = 1.0f) {
 	ImGuiStyle& style = ImGui::GetStyle();
