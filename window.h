@@ -15,8 +15,7 @@
 
 #include <iostream>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "WindowIcon.h"
 
 
 class Window {
@@ -74,14 +73,13 @@ public:
 
         glfwSetFramebufferSizeCallback(window, (GLFWframebuffersizefun)framebuffer_resize_callback);
 
-        if (iconPath != "") {
-            int cif;
-            GLFWimage images[1];
-            images[0].pixels = stbi_load(iconPath.c_str(), &images[0].width, &images[0].height, &cif, 4);
-            //rgba channels
-            glfwSetWindowIcon(window, 1, images);
-            stbi_image_free(images[0].pixels);
-        }
+        // Create a GLFWimage and set the icon
+        GLFWimage icon;
+        icon.width = icon_width;
+        icon.height = icon_height;
+        icon.pixels = icon_data;
+
+        glfwSetWindowIcon(window, 1, &icon);
     }
 
     ~Window() {

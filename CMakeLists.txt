@@ -82,12 +82,6 @@ add_custom_command(
     COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/progressionData to ${OUTPUT_DIRECTORY_PROGRESSION}"
 )
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/WindowIcon.png
-    ${CMAKE_BINARY_DIR}/WindowIcon.png
-    COPYONLY
-)
-
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET UniversityProgressionCalculator PROPERTY CXX_STANDARD 20)
