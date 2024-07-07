@@ -42,6 +42,10 @@ struct KeyInformation {
 			ImGui::Text("%d Credits at %.2f%%", p.first, p.second);
 		}
 
+		if (!ImGui::IsWindowFocused()) {
+			show = false;
+		}
+
 		if (ImGui::Button("Close")) {
 			show = false;
 		}

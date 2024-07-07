@@ -16,10 +16,11 @@ project ("UniversityProgressionCalculator")
 # Prefer static libraries
 #set(BUILD_SHARED_LIBS OFF)
 
-find_package(SFML REQUIRED COMPONENTS graphics system window)
+#find_package(SFML REQUIRED COMPONENTS graphics system window)
 find_package(imgui CONFIG REQUIRED)
-find_package(ImGui-SFML CONFIG REQUIRED)
+#find_package(ImGui-SFML CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(glad CONFIG REQUIRED)
 
 # Get imnodes for node editor
 FetchContent_Declare( imnodes 
@@ -44,12 +45,13 @@ add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator
 #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
-                    sfml-graphics sfml-system sfml-window
+ #                   sfml-graphics sfml-system sfml-window
                     imgui::imgui
-                    ImGui-SFML::ImGui-SFML
+  #                  ImGui-SFML::ImGui-SFML
                     nlohmann_json::nlohmann_json
                     imnodes
                     ctre::ctre
+                    glad::glad
                     )
 
 # Set the output directory path

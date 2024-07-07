@@ -3,12 +3,14 @@
 
 #pragma once
 
+#include "window.h"
+
 #include <iostream>
 #include <vector>
 #include <filesystem>
 
-#include <SFML/Graphics.hpp>
-#include <imgui-SFML.h>
+//#include <SFML/Graphics.hpp>
+//#include <imgui-SFML.h>
 #include <imgui.h>
 #include <imnodes.h>
 
