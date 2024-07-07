@@ -10,9 +10,9 @@ void Term::display(){
 	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text(term.c_str());
 	ImGui::SameLine();
-	if (ImGui::Button("Add Module")) {
+	/*if (ImGui::Button("Add Module")) {
 		this->modules.emplace_back(Module());
-	}
+	}*/
 
 	ImGui::SameLine();
 	if (ImGui::Button("Edit Term")) {
@@ -20,6 +20,19 @@ void Term::display(){
 	}
 	if (ImGui::BeginPopupModal(("Edit Term##Popup" + term).c_str())) {
 		ImGui::Text(term.c_str());
+
+		if (ImGui::Button("Add Module")) {
+			this->modules.emplace_back(Module());
+		}
+
+		for (int i = 0; i < modules.size(); i++) {
+			ImGui::Text(modules[i].data.moduleName.c_str());
+			ImGui::SameLine();
+			if (ImGui::Button(("Delete##" + std::to_string(i)).c_str())) {
+				deleteModule(i);
+				i--;
+			}
+		}
 
 		//click ok when finished adjusting
 		if (ImGui::Button("Exit")) {
@@ -46,4 +59,8 @@ void Term::calculatePercentages(){
 	for (auto& m : modules) {
 		m.calculateModulePercent();
 	}
+}
+
+void Term::deleteModule(const int i){
+	modules.erase(modules.begin() + i);
 }

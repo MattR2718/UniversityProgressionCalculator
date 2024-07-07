@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 #include "module.h"
 
@@ -21,7 +22,7 @@ public:
 
 	void calculatePercentages();
 
-	void deleteModule(const std::string_view mn);
+	void deleteModule(const int i);
 
 private:
 	static inline int count = 0;
