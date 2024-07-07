@@ -7,6 +7,8 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
+#include "term.h"
+
 struct ModuleData {
 	std::string moduleName = "Default Module";
 	int credits = 0;
@@ -51,7 +53,7 @@ struct ModuleData {
 	}
 };
 
-
+class Term;
 class Module {
 
 public:

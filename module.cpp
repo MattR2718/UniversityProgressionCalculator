@@ -22,6 +22,25 @@ void Module::display(){
 	ImGui::SameLine();
 	if (ImGui::Button("EDIT")) {
 		this->editingModule = !this->editingModule;
+		ImGui::OpenPopup(("EDIT: " + this->data.moduleName).c_str());
+	}
+
+	if (ImGui::Button("Edit Module")) {
+		ImGui::OpenPopup(("Edit Module##Popup" + data.moduleName).c_str());
+	}
+	if (ImGui::BeginPopupModal(("Edit Module##Popup" + data.moduleName).c_str())) {
+		ImGui::Text(data.moduleName.c_str());
+
+
+
+
+
+		//click ok when finished adjusting
+		if (ImGui::Button("Exit")) {
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
 	}
 
 	ImGui::Text("Credits: %d", data.credits);
@@ -35,6 +54,7 @@ void Module::display(){
 	ImGui::Text(("Pass Or Fail Module?....." + std::string(((data.pass) ? "Pass" : "Fail"))).c_str());
 	ImGui::EndChild();
 
+	//if(ImGui::BeginPopupModal(("EDIT: " + this->data.moduleName).c_str())){
 	if (this->editingModule) {
 		if (this->setData) {
 			this->tempData.set(this->data);
@@ -42,7 +62,7 @@ void Module::display(){
 			this->setData = false;
 		}
 
-		ImGui::Begin(("EDIT: " + this->tempData.moduleName).c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(("EDIT: " + this->data.moduleName).c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize);
 		
 		ImGui::InputText("Module Name", tempData.mNameBuf, sizeof(tempData.mNameBuf), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_AlwaysOverwrite);
 		
@@ -53,16 +73,16 @@ void Module::display(){
 		ImGui::InputFloat("Exam Percentage", &tempData.examPercent, 0.01f, 1.0f, "%.2f%%");
 		ImGui::InputFloat("Coursework Percentage", &tempData.courseworkPercent, 0.01f, 1.0f, "%.2f%%");
 
-		ImGui::Text((ImGui::IsKeyPressed(ImGuiKey_Backspace) ? "Backspace Pressed" : "Backspace Not Pressed"));
-
 		if (ImGui::Button("Save")) {
 			this->data.set(this->tempData);
 			this->editingModule = false;
 			this->setData = true;
+			//ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Close")) {
 			this->editingModule = false;
 			this->setData = true;
+			//ImGui::CloseCurrentPopup();
 		}
 
 		ImGui::End();

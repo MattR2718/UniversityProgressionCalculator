@@ -4,6 +4,8 @@
 
 #include "module.h"
 
+class Module;
+
 class Term {
 public:
 	std::vector<Module> modules = {};
@@ -18,6 +20,8 @@ public:
 	void addModule(Module& m);
 
 	void calculatePercentages();
+
+	void deleteModule(const std::string_view mn);
 
 private:
 	static inline int count = 0;
