@@ -15,6 +15,9 @@
 
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 
 class Window {
 public:
@@ -29,7 +32,7 @@ public:
         }
     }
 
-    Window(const std::string window_title, int width, int height) {
+    Window(const std::string window_title, int width, int height, const std::string iconPath = "") {
         // Create a windowed mode window and its OpenGL context
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -70,6 +73,15 @@ public:
         ImGui_ImplOpenGL3_Init("#version 330");
 
         glfwSetFramebufferSizeCallback(window, (GLFWframebuffersizefun)framebuffer_resize_callback);
+
+        if (iconPath != "") {
+            int cif;
+            GLFWimage images[1];
+            images[0].pixels = stbi_load(iconPath.c_str(), &images[0].width, &images[0].height, &cif, 4);
+            //rgba channels
+            glfwSetWindowIcon(window, 1, images);
+            stbi_image_free(images[0].pixels);
+        }
     }
 
     ~Window() {

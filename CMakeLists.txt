@@ -21,6 +21,7 @@ find_package(imgui CONFIG REQUIRED)
 #find_package(ImGui-SFML CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
+find_package(Stb REQUIRED)
 
 # Get imnodes for node editor
 FetchContent_Declare( imnodes 
@@ -43,6 +44,10 @@ add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator
 
 # Set MSVC to use static runtime libraries
 #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+message("STB INCLUDE DIRS: ", ${Stb_INCLUDE_DIR})
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
  #                   sfml-graphics sfml-system sfml-window
@@ -76,6 +81,13 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/progressionData ${OUTPUT_DIRECTORY_PROGRESSION}
     COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/progressionData to ${OUTPUT_DIRECTORY_PROGRESSION}"
 )
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/WindowIcon.png
+    ${CMAKE_BINARY_DIR}/WindowIcon.png
+    COPYONLY
+)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET UniversityProgressionCalculator PROPERTY CXX_STANDARD 20)
