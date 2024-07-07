@@ -170,7 +170,7 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScal
 	// Sometimes having links causes the program to explode in memory
 	// Crashes somewhere allocating memory for line segments creating bezier cuves
 	// Sometimes fixes itself by removing the below code, compiling then readding for some reason
-#if true
+#if false
 	for (int i = 0; i < links.size(); ++i) {
 		const std::pair<int, int> p = links[i];
 		if (checkBothConditions(p, nodes, keyInformation)) {

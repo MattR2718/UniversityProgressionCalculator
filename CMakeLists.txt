@@ -13,6 +13,9 @@ include(FetchContent)
 
 project ("UniversityProgressionCalculator")
 
+# Prefer static libraries
+#set(BUILD_SHARED_LIBS OFF)
+
 find_package(SFML REQUIRED COMPONENTS graphics system window)
 find_package(imgui CONFIG REQUIRED)
 find_package(ImGui-SFML CONFIG REQUIRED)
@@ -34,6 +37,11 @@ FetchContent_MakeAvailable(ctre)
 
 # Add source to this project's executable.
 add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp" "imguiStyle.h")
+
+#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+# Set MSVC to use static runtime libraries
+#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
                     sfml-graphics sfml-system sfml-window

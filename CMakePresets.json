@@ -11,6 +11,7 @@
             "CMAKE_C_COMPILER": "cl.exe",
             "CMAKE_CXX_COMPILER": "cl.exe",
             "CMAKE_TOOLCHAIN_FILE": "C:\\Users\\matth\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+
           },
             "condition": {
                 "type": "equals",
@@ -26,9 +27,10 @@
                 "value": "x64",
                 "strategy": "external"
             },
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
+          "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+          }
         },
         {
             "name": "x64-release",
