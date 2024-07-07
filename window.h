@@ -31,7 +31,7 @@ public:
         }
     }
 
-    Window(const std::string window_title, int width, int height, const std::string iconPath = "") {
+    Window(const std::string window_title, int width, int height) {
         // Create a windowed mode window and its OpenGL context
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

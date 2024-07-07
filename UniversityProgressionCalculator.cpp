@@ -22,7 +22,7 @@ int main() {
     //int WIDTH = 1920;
     //int HEIGHT = 1080;
 
-    Window window("Progression Calculator", WIDTH * 0.8, HEIGHT * 0.8, "WindowIcon.png");
+    Window window("Progression Calculator", WIDTH * 0.8, HEIGHT * 0.8);
     ImNodes::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
 
