@@ -17,19 +17,21 @@ struct KeyInformation {
 		passedCredits = 0;
 		weightedAverage = 0.0f;
 		creditsAtPercent.clear();
+		int numCredits = 0;
 
 		int nm = 0;
 		for (auto& term : year.terms) {
 			for (auto& module : term.modules) {
 				nm++;
+				numCredits += module.data.credits;
 				if (module.data.modulePercent >= 40.0) {
 					passedCredits += module.data.credits;
 				}
-				weightedAverage += ((float)module.data.credits / 10.0) * module.data.modulePercent;
+				weightedAverage += ((float)module.data.credits / 10.0) * (module.data.courseworkPercent * module.data.courseworkRatio / 100.0f + module.data.examPercent * module.data.examRatio / 100.0f);
 				creditsAtPercent.emplace_back(std::make_pair(module.data.credits, module.data.modulePercent));
 			}
 		}
-		weightedAverage /= (float)nm;
+		weightedAverage /= (float)numCredits / 10.0;
 	}
 	
 	void display(bool& show) {

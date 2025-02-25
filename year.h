@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <imgui.h>
+#include <numeric>
 
 #include "term.h"
 
@@ -23,6 +24,12 @@ public:
 	void calculatePercentages();
 
 	float getOverallPercentage();
+
+	int getTotalNumModules();
+
+	std::vector<const char*> getModuleNames();
+
+	std::vector<float> getModulePercentages();
 
 private:
 	static inline int count = 0;

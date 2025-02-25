@@ -47,3 +47,27 @@ float Year::getOverallPercentage(){
 	}
 	return total;
 }
+
+int Year::getTotalNumModules(){
+	return std::accumulate(terms.begin(), terms.end(), 0, [](int total, Term& t) { return total + t.modules.size(); });
+}
+
+std::vector<const char*> Year::getModuleNames(){
+	std::vector<const char*> names;
+	for (auto& t : terms) {
+		for (auto& m : t.modules) {
+			names.push_back(m.data.moduleName.c_str());
+		}
+	}
+	return names;
+}
+
+std::vector<float> Year::getModulePercentages(){
+	std::vector<float> percentages;
+	for (auto& t : terms) {
+		for (auto& m : t.modules) {
+			percentages.push_back(m.data.modulePercent);
+		}
+	}
+	return percentages;
+}

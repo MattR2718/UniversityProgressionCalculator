@@ -81,6 +81,8 @@ int main() {
         y.calculatePercentages();
     }
 
+    std::string currentlySelectedTab = years[0].year;
+
     std::string treePath = "progressionData/progressionData.json";
     bool progressionTreeFileExists = false;
     ProgressionTree progTree;
@@ -193,20 +195,28 @@ int main() {
                 if (ImGui::BeginTabBar("Years Tab Bar", tabBarFlags)) {
                     ImGuiTabItemFlags tabItemFlags = ImGuiTabItemFlags_NoAssumedClosure | ImGuiTabItemFlags_NoReorder;
                     for (auto& year : years) {
-                        if (year.tabOpen && ImGui::BeginTabItem(year.year.c_str(), &year.tabOpen, tabItemFlags)) {
+                        if (ImGui::BeginTabItem(year.year.c_str(), &year.tabOpen, tabItemFlags)) {
+                            if (ImGui::IsItemClicked()) {
+                                currentlySelectedTab = year.year;
+								//std::cout << year.year << '\n';
+                            }
                             // Set Number Of Columns, for each term
                             ImGui::Columns(year.terms.size());
 
                             for (auto& t : year.terms) {
                                 t.display();
-                                //t.fontScale = 1.0f;
-                                //t.fontScale = &textScale;
                                 ImGui::NextColumn();
                             }
+
+                            
 
                             ImGui::EndTabItem();
 
                             keyInformation.calcData(year);
+                        }
+                        if (ImGui::IsItemClicked()) {
+                            currentlySelectedTab = year.year;
+                            //std::cout << year.year << '\n';
                         }
                     }
                     ImGui::EndTabBar();
@@ -332,62 +342,125 @@ int main() {
                     ImGui::EndTabItem();
                 }
 
-                // You can add more tabs here if needed
                 if (ImGui::BeginTabItem("Graphs")) {
-                    // Simple example plot
-                    static std::vector<float> xData, yData;
-                    static bool initialized = false;
 
-                    if (!initialized) {
-                        const int num_points = 100;
-                        xData.resize(num_points);
-                        yData.resize(num_points);
-                        for (int i = 0; i < num_points; ++i) {
-                            xData[i] = i * 0.1f;
-                            yData[i] = sinf(xData[i]);
+
+
+                    // Plot lines on the graph to show grade boundaries
+                    auto plotGradeBoundaryLines = [](std::vector<double> positions) {
+                        positions.insert(positions.begin(), 0.0f);
+                        positions.push_back(static_cast<double>(positions.size()));
+
+                        // Add horizontal lines at specific levels (e.g., 50%, 60%, 70%)
+                        std::vector<double> lineLevels = { 40.0f, 50.0f, 60.0f, 70.0f };
+                        for (float level : lineLevels) {
+                            ImU32 lineColor;
+                            if (level >= 70.0f)      lineColor = IM_COL32(0, 200, 0, 255);   // Green (First)
+                            else if (level >= 60.0f) lineColor = IM_COL32(0, 150, 255, 255); // Blue (2:1)
+                            else if (level >= 50.0f) lineColor = IM_COL32(255, 165, 0, 255); // Orange (2:2)
+                            else if (level >= 40.0f) lineColor = IM_COL32(255, 0, 0, 255);   // Red (Pass)
+                            else                                     lineColor = IM_COL32(100, 100, 100, 255); // Gray (Fail)
+
+                            std::vector<double> yValues(positions.size(), level);  // Create a vector with constant level values
+                            ImPlot::PushStyleColor(ImPlotCol_Line, lineColor);  // Set the color
+                            ImPlot::PlotLine("Threshold Line", positions.data(), yValues.data(), static_cast<int>(yValues.size()), ImPlotLineFlags_None);  // Plot the line
+                            ImPlot::PopStyleColor();  // Reset the color
                         }
-                        initialized = true;
-                    }
+                        };
 
-                    if (ImPlot::BeginPlot("Sine Wave")) {
-                        ImPlot::PlotLine("sin(x)", xData.data(), yData.data(), xData.size());
-                        ImPlot::EndPlot();
-                    }
 
-					
+                    // Graph for data on overall degree
                     ImGui::InputFloat4("Year Weights", yearWeights);
 
                     // Bar chart for current year with every module as well as overall percentage being a bar
                     ImPlot::SetNextAxesLimits(0, years.size() + 1, 0, 100, ImGuiCond_Always);
                     auto size = ImGui::GetContentRegionAvail();
-                    if (ImPlot::BeginPlot("Year Progression", ImVec2(size.x, size.y / 2))) {
-                        std::vector<const char*> labels;  // C-style string pointers for ImPlot
+                    if (ImPlot::BeginPlot("Year Progression", ImVec2(size.x, size.y / 2), ImPlotFlags_NoLegend)) {
+                        std::vector<const char*> labels;
                         std::vector<float> values;
-                        std::vector<double> positions;  // X-axis positions
+                        std::vector<double> positions;
 
                         for (size_t i = 0; i < years.size(); ++i) {
-                            labels.push_back(years[i].year.c_str());  // Convert std::string to C-string
+                            labels.push_back(years[i].year.c_str());
                             values.push_back(years[i].getOverallPercentage());
-                            positions.push_back(static_cast<double>(i) + 0.5); // Center labels on bars
+                            positions.push_back(static_cast<double>(i) + 0.5);
                         }
 
-						labels.push_back("Degree");
-						values.push_back(0.0f);
+                        // Add "Degree" bar
+                        labels.push_back("Degree");
+                        values.push_back(0.0f);
                         for (size_t i = 0; i < years.size(); ++i) {
-                            values[values.size() - 1] += values[i] * ((yearWeights[i] > 1.0f) ? yearWeights[i] / 100.0f : yearWeights[i]); // Scale depending on percentage or ratio e.g. 20% = 0.2
+                            values.back() += values[i] * ((yearWeights[i] > 1.0f) ? yearWeights[i] / 100.0f : yearWeights[i]);
                         }
-						positions.push_back(static_cast<double>(years.size()) + 0.5); // Center label on bar
-
+                        positions.push_back(static_cast<double>(years.size()) + 0.5);
 
                         // Set categorical x-axis labels
                         ImPlot::SetupAxisTicks(ImAxis_X1, positions.data(), positions.size(), labels.data());
 
-                        // Plot bars
-                        ImPlot::PlotBars("Overall Percentage", values.data(), values.size(), 0.5f, 0.5f);
+						// Plot grade boundary lines
+						plotGradeBoundaryLines(positions);
+
+                        // Loop through bars and apply color dynamically
+                        for (size_t i = 0; i < values.size(); ++i) {
+                            ImU32 barColor;
+                            if (values[i] >= 70.0f)      barColor = IM_COL32(0, 200, 0, 255);   // Green (First)
+                            else if (values[i] >= 60.0f) barColor = IM_COL32(0, 150, 255, 255); // Blue (2:1)
+                            else if (values[i] >= 50.0f) barColor = IM_COL32(255, 165, 0, 255); // Orange (2:2)
+                            else if (values[i] >= 40.0f) barColor = IM_COL32(255, 0, 0, 255);   // Red (Pass)
+                            else                         barColor = IM_COL32(100, 100, 100, 255); // Gray (Fail)
+
+                            ImPlot::PushStyleColor(ImPlotCol_Fill, barColor);
+                            ImPlot::PlotBars("Overall Percentage", &values[i], 1, 0.5f, positions[i]); // Single bar
+                            ImPlot::PopStyleColor();
+                        }
+
+
 
                         ImPlot::EndPlot();
                     }
-                    
+
+
+                    // Graph for currently seletced year
+                    Year selectedYear = *std::find_if(years.begin(), years.end(), [&currentlySelectedTab](const Year& y) { return y.year == currentlySelectedTab; });
+
+					ImPlot::SetNextAxesLimits(0, selectedYear.getTotalNumModules(), 0, 100, ImGuiCond_Always);
+
+                    auto plotsize = ImGui::GetContentRegionAvail();
+                    if (ImPlot::BeginPlot("Module Progression", ImVec2(plotsize.x, plotsize.y), ImPlotFlags_NoLegend)) {
+
+                        std::vector<double> positions;
+						for (int i = 0; i < selectedYear.getTotalNumModules(); ++i) {
+							positions.push_back(static_cast<double>(i) + 0.5);
+						}
+
+						std::vector<const char*> moduleNames = selectedYear.getModuleNames();
+						std::vector<float> modulePercentages = selectedYear.getModulePercentages();
+
+						ImPlot::SetupAxisTicks(ImAxis_X1, positions.data(), positions.size(), moduleNames.data());
+
+						// Plot grade boundary lines
+						plotGradeBoundaryLines(positions);
+                        
+
+                        for (size_t i = 0; i < modulePercentages.size(); ++i) {
+                            ImU32 barColor;
+                            if (modulePercentages[i] >= 70.0f)      barColor = IM_COL32(0, 200, 0, 255);   // Green (First)
+                            else if (modulePercentages[i] >= 60.0f) barColor = IM_COL32(0, 150, 255, 255); // Blue (2:1)
+                            else if (modulePercentages[i] >= 50.0f) barColor = IM_COL32(255, 165, 0, 255); // Orange (2:2)
+                            else if (modulePercentages[i] >= 40.0f) barColor = IM_COL32(255, 0, 0, 255);   // Red (Pass)
+                            else                                     barColor = IM_COL32(100, 100, 100, 255); // Gray (Fail)
+
+                            ImPlot::PushStyleColor(ImPlotCol_Fill, barColor);
+                            ImPlot::PlotBars("Module Percentage", &modulePercentages[i], 1, 0.5f, positions[i]); // Single bar
+                            ImPlot::PopStyleColor();
+                        }
+
+
+
+
+
+                        ImPlot::EndPlot();
+                    }
                     
 
 

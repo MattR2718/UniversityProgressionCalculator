@@ -13,6 +13,7 @@ include(FetchContent)
 
 project ("UniversityProgressionCalculator")
 
+
 # Prefer static libraries
 #set(BUILD_SHARED_LIBS OFF)
 
