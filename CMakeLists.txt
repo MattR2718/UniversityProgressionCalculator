@@ -16,6 +16,7 @@ project ("UniversityProgressionCalculator")
 # Prefer static libraries
 #set(BUILD_SHARED_LIBS OFF)
 
+
 #find_package(SFML REQUIRED COMPONENTS graphics system window)
 find_package(imgui CONFIG REQUIRED)
 #find_package(ImGui-SFML CONFIG REQUIRED)
@@ -37,6 +38,21 @@ FetchContent_Declare( ctre
     )
 FetchContent_MakeAvailable(ctre)
 
+#FetchContent_Declare(
+#    implot
+#    GIT_REPOSITORY https://github.com/epezent/implot.git
+#    GIT_TAG master
+#)
+
+#FetchContent_MakeAvailable(implot)
+
+find_package(implot CONFIG REQUIRED)
+
+# Then link to it in your target:
+#target_link_libraries(${PROJECT_NAME} PRIVATE implot)
+
+#find_package(implot CONFIG)
+
 # Add source to this project's executable.
 add_executable (UniversityProgressionCalculator "UniversityProgressionCalculator.cpp" "UniversityProgressionCalculator.h" "module.cpp" "module.h" "term.cpp" "term.h" "year.h" "year.cpp" "saveLoadJson.h"  "progressionTree.h" "progressionTree.cpp" "imguiStyle.h")
 
@@ -57,6 +73,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
                     imnodes
                     ctre::ctre
                     glad::glad
+                    #implot
+                    implot::implot
                     )
 
 # Set the output directory path

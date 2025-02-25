@@ -24,6 +24,8 @@ public:
 
 	void deleteModule(const int i);
 
+	float getOverallPercentage();
+
 private:
 	static inline int count = 0;
 	int id = -1;

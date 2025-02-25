@@ -64,3 +64,11 @@ void Term::calculatePercentages(){
 void Term::deleteModule(const int i){
 	modules.erase(modules.begin() + i);
 }
+
+float Term::getOverallPercentage(){
+	float total = 0.0f;
+	for (auto& m : modules) {
+		total += m.data.modulePercent * ((float)m.data.credits / 120.f);
+	}
+	return total;
+}

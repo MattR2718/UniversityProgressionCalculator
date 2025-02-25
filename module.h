@@ -4,7 +4,7 @@
 #include <chrono>
 #include <cstring>
 
-#include <imgui-SFML.h>
+//#include <imgui-SFML.h>
 #include <imgui.h>
 
 #include "term.h"

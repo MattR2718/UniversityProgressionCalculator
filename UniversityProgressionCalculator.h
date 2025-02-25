@@ -13,6 +13,7 @@
 //#include <imgui-SFML.h>
 #include <imgui.h>
 #include <imnodes.h>
+#include <implot.h>
 
 #include "keyInformation.h"
 #include "year.h"

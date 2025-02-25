@@ -43,6 +43,8 @@ int main() {
     ImNodes::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
 
+	ImPlot::CreateContext();
+
     float z1 = 1.2;
     int x1 = 1920;
     int y1 = 1080;
@@ -59,6 +61,7 @@ int main() {
     float newFontSize = WIDTH < 2000 ? 16.0f : 40.0f;
 
     std::vector<Year> years;
+    float yearWeights[4] = { 0.0f, 20.0f, 40.0f, 40.0f };
 
     //ImGui::StyleColorsLight();
 
@@ -253,29 +256,152 @@ int main() {
                 ImGui::End();
             }
 
+            /*
+            ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_None;
+            ImGui::BeginTabBar("Data Tab Bar", tabBarFlags);
+            // create 2 tabs, one for the tree and one for graphs
+			if (ImGui::BeginTabItem("Tree View")) {
+                //
+                //
+                //
+                //
+                //
+                // Tree View
+                ImGui::Begin("Tree View", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
 
-            //
-            //
-            //
-            //
-            //
-            // Tree View
-            ImGui::Begin("Tree View", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
+                // Make window fill screen but positioned below the menu bar
+                ImGui::SetWindowPos(ImVec2(ww / 2, menuBarHeight * 5));
+                ImGui::SetWindowSize(ImVec2(ww / 2, wh - menuBarHeight * 5));
 
+                ImNodes::BeginNodeEditor();
+
+                auto size = ImGui::GetWindowSize();
+
+                progTree.drawTree(size.x, size.y, keyInformation);
+
+
+                ImNodes::EndNodeEditor();
+
+                ImGui::End();
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Graphs")) {
+				//
+				//
+				//
+				//
+				//
+				// Graphs
+				ImGui::Begin("Graphs", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
+				// Make window fill screen but positioned below the menu bar
+				ImGui::SetWindowPos(ImVec2(ww / 2, menuBarHeight));
+				ImGui::SetWindowSize(ImVec2(ww / 2, wh - menuBarHeight));
+				//ImGui::SetWindowFontScale(textScale);
+				ImGui::Text("Graphs");
+				ImGui::End();
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();*/
+            
+
+            // Create the main window that will contain the tab bar
+            ImGui::Begin("Editor Window", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration);
             // Make window fill screen but positioned below the menu bar
             ImGui::SetWindowPos(ImVec2(ww / 2, menuBarHeight));
             ImGui::SetWindowSize(ImVec2(ww / 2, wh - menuBarHeight));
 
-            ImNodes::BeginNodeEditor();
+            // Begin a tab bar
+            if (ImGui::BeginTabBar("EditorTabBar")) {
+                // Create a tab for the Tree View
+                if (ImGui::BeginTabItem("Tree View")) {
+                    // Calculate the available area for the node editor
+                    // This accounts for the tab bar height
+                    ImVec2 tabContentArea = ImGui::GetContentRegionAvail();
 
-            auto size = ImGui::GetWindowSize();
+                    // Create a child window to hold the node editor with proper sizing
+                    // We don't need to manually set the cursor position anymore
+                    ImGui::BeginChild("NodeEditorChild", tabContentArea, false);
 
-            progTree.drawTree(size.x, size.y, keyInformation);
+                    ImNodes::BeginNodeEditor();
+                    auto size = ImGui::GetContentRegionAvail();
+                    progTree.drawTree(size.x, size.y, keyInformation);
+                    ImNodes::EndNodeEditor();
+
+                    ImGui::EndChild();
+
+                    ImGui::EndTabItem();
+                }
+
+                // You can add more tabs here if needed
+                if (ImGui::BeginTabItem("Graphs")) {
+                    // Simple example plot
+                    static std::vector<float> xData, yData;
+                    static bool initialized = false;
+
+                    if (!initialized) {
+                        const int num_points = 100;
+                        xData.resize(num_points);
+                        yData.resize(num_points);
+                        for (int i = 0; i < num_points; ++i) {
+                            xData[i] = i * 0.1f;
+                            yData[i] = sinf(xData[i]);
+                        }
+                        initialized = true;
+                    }
+
+                    if (ImPlot::BeginPlot("Sine Wave")) {
+                        ImPlot::PlotLine("sin(x)", xData.data(), yData.data(), xData.size());
+                        ImPlot::EndPlot();
+                    }
+
+					
+                    ImGui::InputFloat4("Year Weights", yearWeights);
+
+                    // Bar chart for current year with every module as well as overall percentage being a bar
+                    ImPlot::SetNextAxesLimits(0, years.size() + 1, 0, 100, ImGuiCond_Always);
+                    auto size = ImGui::GetContentRegionAvail();
+                    if (ImPlot::BeginPlot("Year Progression", ImVec2(size.x, size.y / 2))) {
+                        std::vector<const char*> labels;  // C-style string pointers for ImPlot
+                        std::vector<float> values;
+                        std::vector<double> positions;  // X-axis positions
+
+                        for (size_t i = 0; i < years.size(); ++i) {
+                            labels.push_back(years[i].year.c_str());  // Convert std::string to C-string
+                            values.push_back(years[i].getOverallPercentage());
+                            positions.push_back(static_cast<double>(i) + 0.5); // Center labels on bars
+                        }
+
+						labels.push_back("Degree");
+						values.push_back(0.0f);
+                        for (size_t i = 0; i < years.size(); ++i) {
+                            values[values.size() - 1] += values[i] * ((yearWeights[i] > 1.0f) ? yearWeights[i] / 100.0f : yearWeights[i]); // Scale depending on percentage or ratio e.g. 20% = 0.2
+                        }
+						positions.push_back(static_cast<double>(years.size()) + 0.5); // Center label on bar
 
 
-            ImNodes::EndNodeEditor();
+                        // Set categorical x-axis labels
+                        ImPlot::SetupAxisTicks(ImAxis_X1, positions.data(), positions.size(), labels.data());
+
+                        // Plot bars
+                        ImPlot::PlotBars("Overall Percentage", values.data(), values.size(), 0.5f, 0.5f);
+
+                        ImPlot::EndPlot();
+                    }
+                    
+                    
+
+
+
+
+                    ImGui::EndTabItem();
+                }
+
+                ImGui::EndTabBar();
+            }
 
             ImGui::End();
+
+            
 
             if (keyInformationWindow) {
                 keyInformation.display(keyInformationWindow);
@@ -287,5 +413,6 @@ int main() {
 
     saveYearsToJson(path, years);
 
+    ImPlot::DestroyContext();
     ImNodes::DestroyContext();
 }

@@ -39,3 +39,11 @@ void Year::calculatePercentages(){
 		t.calculatePercentages();
 	}
 }
+
+float Year::getOverallPercentage(){
+	float total = 0.0f;
+	for (auto& t : terms) {
+		total += t.getOverallPercentage();
+	}
+	return total;
+}
