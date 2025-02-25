@@ -57,7 +57,7 @@ class Term;
 class Module {
 
 public:
-	float* fontScale = nullptr;
+	//float* fontScale = nullptr;
 
 	ModuleData data;
 

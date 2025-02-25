@@ -16,7 +16,7 @@ void Module::display(){
 	this->calculateModulePercent();
 
 	ImGui::BeginChild((data.moduleName + "#" + std::to_string(id)).c_str(), ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY);
-	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
+	//ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text(("Module Name: " + data.moduleName).c_str());
 
 	ImGui::SameLine();

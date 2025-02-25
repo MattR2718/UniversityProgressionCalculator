@@ -12,7 +12,7 @@ public:
 	std::vector<Module> modules = {};
 	std::string term = "Default Term";
 
-	float* fontScale = nullptr;
+	//float* fontScale = nullptr;
 
 	Term();
 

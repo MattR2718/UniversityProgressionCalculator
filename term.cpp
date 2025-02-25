@@ -7,7 +7,7 @@ Term::Term(){
 
 void Term::display(){
 	ImGui::BeginChild(("Term#" + std::to_string(id)).c_str(), ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY);
-	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
+	//ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text(term.c_str());
 	ImGui::SameLine();
 	/*if (ImGui::Button("Add Module")) {

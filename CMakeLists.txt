@@ -82,6 +82,13 @@ add_custom_command(
     COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/progressionData to ${OUTPUT_DIRECTORY_PROGRESSION}"
 )
 
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/font ${CMAKE_CURRENT_BINARY_DIR}/font
+    COMMENT "Copying data directory from ${CMAKE_SOURCE_DIR}/font to ${CMAKE_CURRENT_BINARY_DIR}/font"
+)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET UniversityProgressionCalculator PROPERTY CXX_STANDARD 20)

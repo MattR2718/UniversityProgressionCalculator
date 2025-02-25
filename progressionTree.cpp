@@ -92,7 +92,7 @@ bool checkBothConditions(const std::pair<int, int>& link, const std::vector<Node
 }
 
 
-void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScale, KeyInformation keyInformation) {
+void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, KeyInformation keyInformation) {
 	// Define padding between nodes
 	const int xPadding = 10;  // Horizontal gap
 	const int yPadding = 40;  // Vertical gap
@@ -170,7 +170,7 @@ void ProgressionTree::drawTree(int widgetWidth, int widgetHeight, float fontScal
 	// Sometimes having links causes the program to explode in memory
 	// Crashes somewhere allocating memory for line segments creating bezier cuves
 	// Sometimes fixes itself by removing the below code, compiling then readding for some reason
-#if true
+#if 1
 	for (int i = 0; i < links.size(); ++i) {
 		const std::pair<int, int> p = links[i];
 		if (checkBothConditions(p, nodes, keyInformation)) {

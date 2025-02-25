@@ -32,9 +32,9 @@ struct KeyInformation {
 		weightedAverage /= (float)nm;
 	}
 	
-	void display(float textScale, bool& show) {
+	void display(bool& show) {
 		ImGui::Begin("Key Information", NULL, ImGuiWindowFlags_AlwaysAutoResize);
-		ImGui::SetWindowFontScale(textScale);
+		//ImGui::SetWindowFontScale(textScale);
 		ImGui::Text("Passed Credits: %d", passedCredits);
 		ImGui::Text("Weighted Average: %.2f%%", weightedAverage);
 		ImGui::Separator();

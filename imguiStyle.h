@@ -4,18 +4,18 @@
 
 #include "RobotoBlack.h"
 
-void setupFonts() {
-    ImGuiIO& io = ImGui::GetIO();
-    ImFontConfig config;
-    config.FontDataOwnedByAtlas = false;
-
-    io.Fonts->AddFontFromMemoryTTF((void*)Roboto_Black_ttf, sizeof(Roboto_Black_ttf), 16.0f, &config);
-
-    // Merge glyphs
-    io.Fonts->Build();
-
-    io.FontDefault = io.Fonts->Fonts[0];
-}
+//void setupFonts() {
+//    ImGuiIO& io = ImGui::GetIO();
+//    ImFontConfig config;
+//    config.FontDataOwnedByAtlas = false;
+//
+//    io.Fonts->AddFontFromMemoryTTF((void*)Roboto_Black_ttf, sizeof(Roboto_Black_ttf), 16.0f, &config);
+//
+//    // Merge glyphs
+//    io.Fonts->Build();
+//
+//    io.FontDefault = io.Fonts->Fonts[0];
+//}
 
 void setStyle(bool darkMode = false, float alpha = 1.0f) {
     ImGuiStyle& style = ImGui::GetStyle();

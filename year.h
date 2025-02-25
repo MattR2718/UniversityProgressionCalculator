@@ -11,7 +11,7 @@ public:
 	std::string year = "Default";
 
 	bool tabOpen = true;
-	float* fontScale = nullptr;
+	//float* fontScale = nullptr;
 
 	Year(std::string y = "Default");
 	int getColumns();

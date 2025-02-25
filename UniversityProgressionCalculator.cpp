@@ -7,6 +7,23 @@ float update_ts(float z1, float z2, int x1, int y1, int x2, int y2, int x, int y
     return std::abs(tsm * (z1 + ((z2 - z1) / (x2 - x1 + y2 - y1)) * ((x - x1) + (y - y1))));
 }
 
+void LoadCustomFont(float fontSize) {
+    ImGuiIO& io = ImGui::GetIO();
+
+    // Clear existing fonts
+    io.Fonts->Clear();
+
+    // Load new font with desired size
+    io.Fonts->AddFontFromFileTTF("font/Roboto-Black.ttf", fontSize);
+
+    // Rebuild the font atlas
+    io.Fonts->Build();
+
+    // Tell ImGui to rebuild the rendering resources
+    ImGui_ImplOpenGL3_DestroyFontsTexture();  // Ensure old font texture is removed
+    ImGui_ImplOpenGL3_CreateFontsTexture();   // Upload new texture
+}
+
 int main() {
 
     //int WIDTH = floor(static_cast<int>(0.8 * sf::VideoMode::getDesktopMode().width) / 100) * 100;
@@ -19,8 +36,8 @@ int main() {
     int WIDTH = mode->width;
     int HEIGHT = mode->height;
 
-    //int WIDTH = 1920;
-    //int HEIGHT = 1080;
+    //WIDTH = 1920;
+    //HEIGHT = 1080;
 
     Window window("Progression Calculator", WIDTH * 0.8, HEIGHT * 0.8);
     ImNodes::CreateContext();
@@ -33,15 +50,20 @@ int main() {
     int x2 = 3840;
     int y2 = 2160;
     
+	//float textScale = 1.0f;
     //float textScale = (HEIGHT < 1350) ? 1.2 : 1.8;
-    float textScaleMult = 1.0f;
-    float textScale = update_ts(z1, z2, x1, y1, x2, y2, WIDTH, HEIGHT, textScaleMult);
+    //float textScaleMult = 1.0f;
+    //float textScale = update_ts(z1, z2, x1, y1, x2, y2, WIDTH, HEIGHT, textScaleMult);
+    float fontSize = WIDTH < 2000 ? 16.0f : 40.0f;
+    bool fontChangeRequested = false;
+    float newFontSize = WIDTH < 2000 ? 16.0f : 40.0f;
 
     std::vector<Year> years;
 
     //ImGui::StyleColorsLight();
 
-    setupFonts();
+    //setupFonts();
+	LoadCustomFont(fontSize);
 
     bool appearancePopup = false;
 
@@ -81,12 +103,19 @@ int main() {
     while(window.is_open()){
         window.poll_events();
 
+		// update text scale if requested
+		if (fontChangeRequested) {
+			fontSize = newFontSize;
+			LoadCustomFont(fontSize);
+			fontChangeRequested = false;
+		}
+
         window.begin_frame();
 
         // Create a menu bar at the top of the screen
         if (ImGui::BeginMainMenuBar()) {
             // Set font scale for menu bar
-            ImGui::SetWindowFontScale(textScale);
+            //ImGui::SetWindowFontScale(textScale);
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("Save")) {
                     saveYearsToJson(path, years);
@@ -113,9 +142,9 @@ int main() {
         }
 
         // Get the height of the main menu bar
-        float menuBarHeight = ImGui::GetFrameHeightWithSpacing() * textScale;
+        float menuBarHeight = ImGui::GetFrameHeightWithSpacing();
         auto [ww, wh] = window.get_window_size();
-        textScale = update_ts(z1, z2, x1, y1, x2, y2, ww, wh, textScaleMult);
+        //textScale = update_ts(z1, z2, x1, y1, x2, y2, ww, wh, textScaleMult);
 
         if (!userDataFileExists) {
             ImGui::Begin("NO USER DATA");
@@ -152,8 +181,8 @@ int main() {
             ImGui::SetWindowSize(ImVec2(ww / 2, wh - menuBarHeight));
 
             // Apply font scaling for the content
-            ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-            io.Fonts->Fonts[0]->Scale = textScale;
+            //ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
+            //io.Fonts->Fonts[0]->Scale = textScale;
 
             // Create tabs for years
             if (years.size()) {
@@ -167,7 +196,8 @@ int main() {
 
                             for (auto& t : year.terms) {
                                 t.display();
-                                t.fontScale = &textScale;
+                                //t.fontScale = 1.0f;
+                                //t.fontScale = &textScale;
                                 ImGui::NextColumn();
                             }
 
@@ -179,22 +209,27 @@ int main() {
                     ImGui::EndTabBar();
                 }
             }
-            ImGui::PopFont();
+            //ImGui::PopFont();
 
             ImGui::End();
 
             //
             // Appearance code
             if (appearancePopup && ImGui::Begin("AppearanceSettings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-                ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
-                io.Fonts->Fonts[0]->Scale = textScale;
+                //ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]);
+                //io.Fonts->Fonts[0]->Scale = textScale;
 
-                ImGui::SetWindowFontScale(textScale);
+                //ImGui::SetWindowFontScale(textScale);
 
                 ImGui::Text("Appearance Settings");
                 ImGui::Separator();
 
-                ImGui::InputFloat("Text Scale", &textScaleMult, 0.025f, 0.25f, "%.3f");
+                //ImGui::InputFloat("Text Scale", &textScaleMult, 0.025f, 0.25f, "%.3f");
+
+                if (ImGui::InputFloat("Font Size", &newFontSize, 1.0f, 5.0f, "%.0f")) {
+                    fontChangeRequested = true;
+					//LoadCustomFont(fontSize);
+                }
 
                 if (ImGui::Button("Toggle Theme")) {
                     light = !light;
@@ -214,7 +249,7 @@ int main() {
                 if (ImGui::Button("Close")) {
                     appearancePopup = false;
                 }
-                ImGui::PopFont();
+                //ImGui::PopFont();
                 ImGui::End();
             }
 
@@ -235,7 +270,7 @@ int main() {
 
             auto size = ImGui::GetWindowSize();
 
-            progTree.drawTree(size.x, size.y, textScale, keyInformation);
+            progTree.drawTree(size.x, size.y, keyInformation);
 
 
             ImNodes::EndNodeEditor();
@@ -243,7 +278,7 @@ int main() {
             ImGui::End();
 
             if (keyInformationWindow) {
-                keyInformation.display(textScale, keyInformationWindow);
+                keyInformation.display(keyInformationWindow);
             }
         }
 

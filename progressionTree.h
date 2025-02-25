@@ -123,7 +123,7 @@ public:
 	ProgressionTree();
 	ProgressionTree(const std::string& path, const std::string uni = "UON");
 
-	void drawTree(int widgetWidth, int widgetHeight, float fontScale, KeyInformation keyInformation);
+	void drawTree(int widgetWidth, int widgetHeight, KeyInformation keyInformation);
 
 	std::vector<Node> nodes;
 	std::vector<std::pair<int, int>> links;

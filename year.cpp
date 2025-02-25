@@ -19,7 +19,7 @@ int Year::getColumns(){
 void Year::display(){
 
 	ImGui::BeginChild(("Year#"+std::to_string(id)).c_str(), ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY);
-	ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
+	//ImGui::SetWindowFontScale((fontScale) ? *fontScale : 1.0f);
 	ImGui::Text("Number Of Terms: %d", terms.size());
 	for (auto& t : terms) {
 		t.display();
