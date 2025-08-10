@@ -14,16 +14,97 @@ include(FetchContent)
 project ("UniversityProgressionCalculator")
 
 
+
+
+
+
+
+function(dump_cmake_variables)
+    get_cmake_property(_variableNames VARIABLES)
+    list (SORT _variableNames)
+    foreach (_variableName ${_variableNames})
+        if (ARGV0)
+            unset(MATCHED)
+
+            #case sensitive match
+            # string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
+            #
+            #case insenstitive match
+            string( TOLOWER "${ARGV0}" ARGV0_lower )
+            string( TOLOWER "${_variableName}" _variableName_lower )
+            string(REGEX MATCH ${ARGV0_lower} MATCHED ${_variableName_lower})
+
+            if (NOT MATCHED)
+                continue()
+            endif()
+        endif()
+        message(STATUS "${_variableName}=${${_variableName}}")
+    endforeach()
+endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Prefer static libraries
 #set(BUILD_SHARED_LIBS OFF)
 
 
 #find_package(SFML REQUIRED COMPONENTS graphics system window)
-find_package(imgui CONFIG REQUIRED)
+#find_package(imgui CONFIG REQUIRED)
+
+#if(NOT INGUI_FOUND)
+FetchContent_Declare( imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG origin/master
+)
+FetchContent_MakeAvailable(imgui)
+#endif()
+
+#add_subdirectory(_deps/imgui-build)
+
+if(NOT imgui_DIR)
+    # Adjust the path to where imguiConfig.cmake or imgui-config.cmake actually is
+    set(imgui_DIR "/home/matthew/Code/UniversityProgressionCalculator/_deps/imgui-src" CACHE PATH "Path to ImGui cmake config")
+    message(STATUS "imgui_DIR was not set, now set to: ${imgui_DIR}")
+endif()
+
+
 #find_package(ImGui-SFML CONFIG REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
-find_package(glad CONFIG REQUIRED)
-find_package(Stb REQUIRED)
+#find_package(nlohmann_json CONFIG REQUIRED)
+FetchContent_Declare( nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG origin/master
+)
+FetchContent_MakeAvailable(nlohmann_json)
+
+#find_package(glad CONFIG REQUIRED)
+FetchContent_Declare( glad
+    GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+    GIT_TAG origin/master
+)
+FetchContent_MakeAvailable(glad)
+
+
+
+#find_package(Stb REQUIRED)
+FetchContent_Declare( Stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG origin/master
+)
+FetchContent_MakeAvailable(Stb)
+
+message("HERERERERE")
+dump_cmake_variables(imgui)
 
 # Get imnodes for node editor
 FetchContent_Declare( imnodes 
@@ -46,6 +127,9 @@ FetchContent_MakeAvailable(ctre)
 #)
 
 #FetchContent_MakeAvailable(implot)
+
+
+message("HERE")
 
 find_package(implot CONFIG REQUIRED)
 
